@@ -28,8 +28,9 @@ class TalkController extends BaseController
 
         if (!$event) {
             $this->render(
-                'Event/error_404.html.twig',
+                'Error/not_found_error.html.twig',
                 array(
+                    'type' => 'Event',
                     'message' => 'Event was not retrieved, perhaps the slug is invalid?',
                 ),
                 404
