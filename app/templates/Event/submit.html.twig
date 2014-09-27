@@ -1,7 +1,7 @@
 {% extends '/layout.html.twig' %}
 
 {% block body %}
-    {% if user %}
+    {% if session_user %}
         <style>
             label.required:after {
                 content: ' *'
@@ -109,7 +109,7 @@
 {% endblock %}
 
 {% block extraAside %}
-    {% if user %}
+    {% if session_user %}
     <h3>Submission tips</h3>
     <p>
         Here's a few useful definitions when submitting events:

@@ -68,4 +68,13 @@ class TalkCommentEntity
 
         return $this->data->source;
     }
+
+    public function getTalk()
+    {
+        if (!isset($this->data->talk)) {
+            return null;
+        }
+
+        return $this->data->talk;
+    }
 }

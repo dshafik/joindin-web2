@@ -47,7 +47,7 @@ $app->view()->appendData(
 $app->view()->appendData(
     array(
         'google_analytics_id' => $config['slim']['custom']['googleAnalyticsId'],
-        'user' => (isset($_SESSION['user']) ? $_SESSION['user'] : false),
+        'session_user' => (isset($_SESSION['user']) ? $_SESSION['user'] : false),
     )
 );
 

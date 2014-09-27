@@ -15,9 +15,40 @@ class UserController extends BaseController
      */
     protected function defineRoutes(\Slim\Slim $app)
     {
+        $app->get('/user/:id', array($this, 'index'))->name('user');
         $app->get('/user/logout', array($this, 'logout'))->name('user-logout');
         $app->map('/user/login', array($this, 'login'))->via('GET', 'POST')->name('user-login');
         $app->map('/user/register', array($this, 'register'))->via('GET', 'POST')->name('user-register');
+    }
+
+    public function index($user_id)
+    {
+        $config = $this->application->config('oauth');
+        $request = $this->application->request();
+
+        // now get users details
+        $keyPrefix = $this->cfg['redisKeyPrefix'];
+        $cache = new CacheService($keyPrefix);
+        $userApi = new UserApi($this->cfg, $this->accessToken, new UserDb($cache));
+        $user = $userApi->getUser($this->cfg['apiUrl'] . '/v2.1/users/' .$user_id);
+        if ($user) {
+            $this->render(
+                'User/index.html.twig',
+                array(
+                    'user' => $user,
+                )
+            );
+        } else {
+            $this->render(
+                'Error/not_found_error.html.twig',
+                array(
+                    'type' => 'User',
+                    'message' => 'User was not found, perhaps the username is invalid?',
+                ),
+                404
+            );
+            return;
+        }
     }
 
     /**

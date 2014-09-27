@@ -87,6 +87,11 @@ class TalkEntity
         return $this->data->uri;
     }
 
+    public function getEvent()
+    {
+        return $this->data->event;
+    }
+
     public function getEventUri()
     {
         return $this->data->event_uri;
@@ -95,6 +100,11 @@ class TalkEntity
     public function getAverageRating()
     {
         return $this->data->average_rating;
+    }
+
+    public function getCommentCount()
+    {
+        return $this->data->comment_count;
     }
 
     public function getCommentUri()
@@ -134,5 +144,10 @@ class TalkEntity
     public function getLanguage()
     {
         return $this->data->language;
+    }
+
+    public function __toString()
+    {
+        return var_export(get_class_methods($this), true);
     }
 }

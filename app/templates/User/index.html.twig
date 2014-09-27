@@ -1,0 +1,92 @@
+{% extends '/layout.html.twig' %}
+
+{% block body %}
+
+    <h1>
+        <div class="avatar pull-left">
+            <img src="{{ gravatar(user.getEmailHash) }}">
+        </div>
+        {{ user.getFullname }}
+    </h1>
+
+    {% set talks = user.getTalks %}
+    {% if talks %}
+        <section>
+            <div class="row">
+                <div class="col-xs-12 talk">
+                    <h3>Recent Talks</h3>
+                    {% for talk in talks %}
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-xs-12 col-sm-3">
+                                    {% if talk.getAverageRating %}
+                                        <div class="row">
+                                            <h4>
+                                                {% include '_common/rating.html.twig' with {'rating': talk.getAverageRating} %}
+                                            </h4>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="row">
+                                        {% set event = talk.getEvent %}
+                                        <h4><a href="{{ urlFor('talk', {'eventSlug': event.url_friendly_name, 'talkSlug': talk.getUrlFriendlyTalkTitle }) }}">{{ talk.getTitle }}</a></h4>
+                                        <small>
+                                            at
+                                            <a href="{{ urlFor('event-detail', {'friendly_name': event.url_friendly_name}) }}">{{ event.name }}</a> ({{ talk.getStartDateTime|date('j M Y') }})
+                                            |
+                                            <a href="{{ urlFor('talk', {'eventSlug': event.url_friendly_name, 'talkSlug': talk.getUrlFriendlyTalkTitle }) }}#comments">
+                                                {{ talk.getCommentCount }}
+                                                {% if talk.getCommentCount == 1 %}
+                                                    comment
+                                                {% else %}
+                                                    comments
+                                                {% endif %}
+                                            </a>
+                                            |
+                                            {% for speaker in talk.speakers %}
+                                                <a href="{{ urlFor("user", {'id': speaker.id }) }}">{{ speaker.speaker_name }}</a>{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    {% set comments = user.getComments %}
+    {% set events = user.getEvents %}
+
+    {% if comments and events %}
+        <div class="col-xs-12 col-sm-6">
+            <h3>Recently Attended</h3>
+            {% for event in events %}
+                {% include 'Event/_common/summary.html.twig' with {'event': event, 'profile': true}%}
+            {% endfor %}
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <h3>Recent Comments</h3>
+            {% for comment in comments %}
+                {% include '_common/comment.html.twig' with {'comment': comment, 'profile': true}%}
+            {% endfor %}
+        </div>
+    {% elseif comments %}
+        <div class="col-xs-12 col-sm-6">
+            <h3>Recent Comments</h3>
+            {% for comment in comments %}
+                {{ dump(comment) }}
+            {% endfor %}
+        </div>
+    {% elseif events %}
+        <div class="col-xs-12 col-sm-6">
+            <h3>Recent Events</h3>
+            {% for event in events %}
+                {{ dump(event) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

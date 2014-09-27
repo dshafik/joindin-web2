@@ -40,6 +40,7 @@ abstract class BaseController
                         'An exception has been thrown during the rendering of a template ("%s").',
                         $e->getMessage()
                     ),
+                    'exception' => $e,
                     -1,
                     null,
                     $e

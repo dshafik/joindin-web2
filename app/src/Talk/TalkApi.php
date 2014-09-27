@@ -59,7 +59,10 @@ class TalkApi extends BaseApi
 
         $talk = (array)json_decode($this->apiGet($talk_uri));
 
-        return new TalkEntity($talk['talks'][0]);
+        if (isset($talk['talks'][0])) {
+            return new TalkEntity($talk['talks'][0]);
+        }
+        return (object) array();
     }
 
     /**

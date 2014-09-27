@@ -42,8 +42,8 @@
                         <a href="{{ urlFor('about') }}">About</a>
                     </li>
 
-                    {% if user %}
-                        <li><a href="#">{{ user.getFullName }}</a></li> <!-- This should link to the user profile page in the future -->
+                    {% if session_user %}
+                        <li><a href="#">{{ session_user.getFullName }}</a></li> <!-- This should link to the user profile page in the future -->
                         <li><a href="{{ urlFor('user-logout') }}">Logout</a></li>
                     {% else %}
                         <li><a href="{{ urlFor('user-login') }}">Login</a></li>
@@ -72,7 +72,7 @@
             <aside class="col-xs-12 col-md-3 pull-right-md">
                 <div class="container-fluid">
                     <section>
-                        {% if not user %}
+                        {% if not session_user %}
                             <h3>Login</h3>
                             {%  include '_common/login.html.twig' %}
                         {% endif %}
